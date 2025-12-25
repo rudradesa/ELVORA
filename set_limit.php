@@ -1,10 +1,9 @@
     <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "browser_db";
 
-// Connect to DB
+require 'conn.php'; // Make sure you have the proper connection settings in this file.
+
+
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -16,13 +15,13 @@ if(isset($_POST['submit'])){
     $hours = intval($_POST['hours']);
     $minutes = intval($_POST['minutes']);
     
-    // Convert hours/minutes to seconds
+    
     $total_seconds = ($hours * 3600) + ($minutes * 60);
     
-    // Encode in DATETIME
+    
     $daily_limit = date('Y-m-d H:i:s', strtotime("2000-01-01 00:00:00 + $total_seconds seconds"));
     
-    // Update DB (or insert if doesn't exist for today)
+    
     $today = date('Y-m-d');
     $sql = "SELECT * FROM user_usage WHERE ul_id=$user_id AND url='$url' AND DATE(last_reset)='$today'";
     $result = $conn->query($sql);
